@@ -1,0 +1,25 @@
+:root {
+  --white: hsl(0, 0%, 100%);
+  --light-gray: hsl(0, 0%, 85%);
+  --gray: hsl(0, 0%, 50%);
+  --dark-gray: hsl(0, 0%, 18%);
+  --black: hsl(0, 0%, 10%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  font-size: 1rem;
+  font-family: monospace;
+}
