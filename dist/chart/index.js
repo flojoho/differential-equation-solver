@@ -1,0 +1,75 @@
+import Vector from '../Vector.js';
+const f = (x) => {
+    return Math.cos(x);
+};
+const padding = 50;
+const segments = 100;
+class Chart {
+    constructor(parentElement, xMin, xMax, yMin, yMax) {
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.yMin = yMin;
+        this.yMax = yMax;
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 1000;
+        this.canvas.height = 700;
+        parentElement.appendChild(this.canvas);
+        this.ctx = this.canvas.getContext('2d');
+        const graphWidth = xMax - xMin;
+        const graphHeight = yMax - yMin;
+        const render = () => {
+            this.ctx.fillStyle = 'black';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.strokeStyle = 'white';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            const bottomLeft = (new Vector(xMin, yMin));
+            const topLeft = (new Vector(xMin, yMax));
+            const topRight = (new Vector(xMax, yMax));
+            const bottomRight = (new Vector(xMax, yMin));
+            const xAxisStart = (new Vector(xMin, 0));
+            const xAxisEnd = (new Vector(xMax, 0));
+            const yAxisStart = (new Vector(0, yMin));
+            const yAxisEnd = (new Vector(0, yMax));
+            this.drawLine(bottomLeft, topLeft);
+            this.drawLine(topLeft, topRight);
+            this.drawLine(topRight, bottomRight);
+            this.drawLine(bottomRight, bottomLeft);
+            this.drawLine(xAxisStart, xAxisEnd);
+            this.drawLine(yAxisStart, yAxisEnd);
+            this.ctx.stroke();
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            for (let i = 0; i <= segments; i++) {
+                const segmentWidth = graphWidth / segments;
+                const currentX = xMin + i * segmentWidth;
+                this.lineTo(new Vector(currentX, f(currentX)));
+            }
+            this.ctx.stroke();
+        };
+        render();
+    }
+    drawLine(vector1, vector2) {
+        const transformed1 = this.toCanvasCoordinates(vector1);
+        const transformed2 = this.toCanvasCoordinates(vector2);
+        this.ctx.moveTo(transformed1.x, transformed1.y);
+        this.ctx.lineTo(transformed2.x, transformed2.y);
+    }
+    moveTo(vector) {
+        const { x, y } = this.toCanvasCoordinates(vector);
+        this.ctx.moveTo(x, y);
+    }
+    lineTo(vector) {
+        const { x, y } = this.toCanvasCoordinates(vector);
+        this.ctx.lineTo(x, y);
+    }
+    toCanvasCoordinates(vector) {
+        const renderWidth = this.canvas.width - 2 * padding;
+        const renderHeight = this.canvas.height - 2 * padding;
+        const { x, y } = vector;
+        const scaleX = renderWidth / (this.xMax - this.xMin);
+        const scaleY = renderHeight / (this.yMax - this.yMin);
+        return new Vector((x - this.xMin) * scaleX + padding, this.canvas.height - ((y - this.yMin) * scaleY + padding));
+    }
+}
+export default Chart;
