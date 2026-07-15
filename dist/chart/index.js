@@ -1,15 +1,12 @@
 import Vector from '../Vector.js';
-const f = (x) => {
-    return Math.cos(x);
-};
 const padding = 50;
-const segments = 100;
 class Chart {
-    constructor(parentElement, xMin, xMax, yMin, yMax) {
+    constructor(parentElement, points, xMin, xMax, yMin, yMax) {
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
+        this.points = points;
         this.canvas = document.createElement('canvas');
         this.canvas.width = 1000;
         this.canvas.height = 700;
@@ -63,14 +60,10 @@ class Chart {
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawCoordinateSystem();
-        const graphWidth = this.xMax - this.xMin;
-        const graphHeight = this.yMax - this.yMin;
         this.ctx.lineWidth = 3;
         this.ctx.beginPath();
-        for (let i = 0; i <= segments; i++) {
-            const segmentWidth = graphWidth / segments;
-            const currentX = this.xMin + i * segmentWidth;
-            this.lineTo(new Vector(currentX, f(currentX)));
+        for (const point of this.points) {
+            this.lineTo(point);
         }
         this.ctx.stroke();
     }

@@ -1,11 +1,6 @@
 import Vector from '../Vector.js';
 
-const f = (x: number) => {
-  return Math.cos(x);
-};
-
 const padding = 50;
-const segments = 100;
 
 class Chart {
   private canvas: HTMLCanvasElement;
@@ -14,12 +9,15 @@ class Chart {
   private xMax: number;
   private yMin: number;
   private yMax: number;
+  private points: Vector[];
   
-  constructor(parentElement: HTMLElement, xMin: number, xMax: number, yMin: number, yMax: number) {
+  constructor(parentElement: HTMLElement, points: Vector[], xMin: number, xMax: number, yMin: number, yMax: number) {
     this.xMin = xMin;
     this.xMax = xMax;
     this.yMin = yMin;
     this.yMax = yMax;
+
+    this.points = points;
     
     this.canvas = document.createElement('canvas');
     this.canvas.width = 1000;
@@ -95,19 +93,13 @@ class Chart {
 
     this.drawCoordinateSystem();
 
-    const graphWidth = this.xMax - this.xMin;
-    const graphHeight = this.yMax - this.yMin;
-
     this.ctx.lineWidth = 3;
     this.ctx.beginPath();
-    for(let i = 0; i <= segments; i++) {
-      const segmentWidth = graphWidth/segments;
-      const currentX = this.xMin + i * segmentWidth;
-      this.lineTo(new Vector(
-        currentX,
-        f(currentX)
-      ));
+
+    for(const point of this.points) {
+      this.lineTo(point);
     }
+
     this.ctx.stroke();
   }
 }
