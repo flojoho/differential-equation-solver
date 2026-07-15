@@ -1,4 +1,3 @@
-
 import Chart from './chart/index.js'
 
 const main = document.getElementById('main') as HTMLDivElement;

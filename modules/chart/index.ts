@@ -35,32 +35,7 @@ class Chart {
       this.ctx.fillStyle = 'black';
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-      this.ctx.strokeStyle = 'white';
-      this.ctx.lineWidth = 1;
-
-      this.ctx.beginPath();
-
-      const bottomLeft = (new Vector(xMin, yMin));
-      const topLeft = (new Vector(xMin, yMax));
-      const topRight = (new Vector(xMax, yMax));
-      const bottomRight = (new Vector(xMax, yMin));
-
-      const xAxisStart = (new Vector(xMin, 0));
-      const xAxisEnd = (new Vector(xMax, 0));
-
-      const yAxisStart = (new Vector(0, yMin));
-      const yAxisEnd = (new Vector(0, yMax));
-
-      this.drawLine(bottomLeft, topLeft);
-      this.drawLine(topLeft, topRight);
-      this.drawLine(topRight, bottomRight);
-      this.drawLine(bottomRight, bottomLeft);
-
-      this.drawLine(xAxisStart, xAxisEnd);
-
-      this.drawLine(yAxisStart, yAxisEnd);
-
-      this.ctx.stroke();
+      this.drawCoordinateSystem();
 
       this.ctx.lineWidth = 3;
       this.ctx.beginPath();
@@ -107,6 +82,34 @@ class Chart {
       (x - this.xMin) * scaleX + padding,
       this.canvas.height - ((y - this.yMin) * scaleY + padding)
     );
+  }
+
+  drawCoordinateSystem() {
+    this.ctx.strokeStyle = 'white';
+    this.ctx.lineWidth = 1;
+    this.ctx.beginPath();
+
+    const bottomLeft = new Vector(this.xMin, this.yMin);
+    const topLeft = new Vector(this.xMin, this.yMax);
+    const topRight = new Vector(this.xMax, this.yMax);
+    const bottomRight = new Vector(this.xMax, this.yMin);
+
+    const xAxisStart = new Vector(this.xMin, 0);
+    const xAxisEnd = new Vector(this.xMax, 0);
+
+    const yAxisStart = new Vector(0, this.yMin);
+    const yAxisEnd = new Vector(0, this.yMax);
+
+    this.drawLine(bottomLeft, topLeft);
+    this.drawLine(topLeft, topRight);
+    this.drawLine(topRight, bottomRight);
+    this.drawLine(bottomRight, bottomLeft);
+
+    this.drawLine(xAxisStart, xAxisEnd);
+
+    this.drawLine(yAxisStart, yAxisEnd);
+
+    this.ctx.stroke();
   }
 }
 

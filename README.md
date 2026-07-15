@@ -1,1 +1,2 @@
-npm start
+# run project
+```npm start```
