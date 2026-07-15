@@ -28,30 +28,7 @@ class Chart {
 
     this.ctx = this.canvas.getContext('2d')!;
 
-    const graphWidth = xMax - xMin;
-    const graphHeight = yMax - yMin;
-
-    const render = () => {
-      this.ctx.fillStyle = 'black';
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.drawCoordinateSystem();
-
-      this.ctx.lineWidth = 3;
-      this.ctx.beginPath();
-      for(let i = 0; i <= segments; i++) {
-        const segmentWidth = graphWidth/segments;
-        const currentX = xMin + i * segmentWidth;
-        this.lineTo(new Vector(
-          currentX,
-          f(currentX)
-        ));
-      }
-      this.ctx.stroke();
-
-    };
-
-    render();
+    this.render();
   }
   
   drawLine (vector1: Vector, vector2: Vector) {
@@ -109,6 +86,28 @@ class Chart {
 
     this.drawLine(yAxisStart, yAxisEnd);
 
+    this.ctx.stroke();
+  }
+
+  render() {
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.drawCoordinateSystem();
+
+    const graphWidth = this.xMax - this.xMin;
+    const graphHeight = this.yMax - this.yMin;
+
+    this.ctx.lineWidth = 3;
+    this.ctx.beginPath();
+    for(let i = 0; i <= segments; i++) {
+      const segmentWidth = graphWidth/segments;
+      const currentX = this.xMin + i * segmentWidth;
+      this.lineTo(new Vector(
+        currentX,
+        f(currentX)
+      ));
+    }
     this.ctx.stroke();
   }
 }
